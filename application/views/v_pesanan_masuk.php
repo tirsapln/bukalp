@@ -194,10 +194,11 @@
                         <?php } ?>
                          
                      </table>
-                        <a href="<?= base_url('admin/excel')?>" class="btn btn-success btn-xl"  ><i class="fas fa-download"></i>  Export Excel
-                        </a>
-                        <a href="<?= base_url('admin/pdf')?>" class="btn btn-danger btn-xl"  ><i class="fas fa-download"></i>  Export PDF
-                        </a>
+                        <button class="btn btn-xm btn-flat btn-success" data-toggle="modal" data-target="#excel"> <i class="fas fa-download"></i>Export Excel</button>
+                        <button class="btn btn-xm btn-flat btn-danger" data-toggle="modal" data-target="#pdf"> <i class="fas fa-download"></i>Export Pdf</button>
+                               
+                        
+                        
                     </div>
                 </div>
               </div>
@@ -303,4 +304,88 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<!-- MODAL EXCEL -->  
+
+
+<div class="modal fade" id="excel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Download Laporan Penjualan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <?php echo form_open('admin/excel/')?>
+        <table class="table">
+            
+            <tr>
+                <th>Tanggal Awal</th>
+                <th>:</th>
+                <th><input type="date" name="tgl_awal" class="form-control" placeholder="Tanggal Akhir" required></th>
+            </tr>
+
+            <tr>
+                <th>Tanggal Akhir</th>
+                <th>:</th>
+                <th><input type="date" name="tgl_akhir" class="form-control" placeholder="Tanggal Awal" required></th>
+            </tr>
+        </table>
+
+        </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Export Excel</button>
+            </div>
+            <?php echo form_close() ?>
+        </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- MODAL EXCEL -->  
+
+
+<div class="modal fade" id="pdf">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Download Laporan Penjualan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <?php echo form_open('admin/pdf/')?>
+        <table class="table">
+            
+            <tr>
+                <th>Tanggal Awal</th>
+                <th>:</th>
+                <th><input type="date" name="tgl_awal" class="form-control" placeholder="Tanggal Akhir" required></th>
+            </tr>
+
+            <tr>
+                <th>Tanggal Akhir</th>
+                <th>:</th>
+                <th><input type="date" name="tgl_akhir" class="form-control" placeholder="Tanggal Awal" required></th>
+            </tr>
+        </table>
+
+        </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Export Pdf</button>
+            </div>
+            <?php echo form_close() ?>
+        </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 <?php } ?>

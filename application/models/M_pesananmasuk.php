@@ -16,7 +16,7 @@ class M_pesananmasuk extends CI_Model {
         return $this->db->get()->result();
   
     }
-    public function listexcel($idtoko)
+    public function listexcel($idtoko,$tgl_awal,$tgl_akhir)
     {
         $this->db->select('*');
         $this->db->from('tb_transaksi');
@@ -24,13 +24,15 @@ class M_pesananmasuk extends CI_Model {
         //$this->db->join('tb_rinci_transaksi', 'tb_rinci_transaksi.id_barang = tb_barang.id_barang', 'left');
         //$this->db->join('tb_barang', 'tb_barang.id_barang = tb_transaksi.id_barang', 'left');
         $this->db->join('tb_pelanggan', 'tb_pelanggan.id_pelanggan = tb_transaksi.id_pelanggan', 'left');
+        $this->db->where('tgl_order >=', $tgl_awal);
+        $this->db->where('tgl_order <=', $tgl_akhir);
         $this->db->where('status_order=3');
         $this->db->where('id_user', $idtoko); 
         $this->db->order_by('id_transaksi', 'desc');
         return $this->db->get();
     }
 
-    public function listpdf($idtoko)
+    public function listpdf($idtoko,$tgl_awal,$tgl_akhir)
     {
         $this->db->select('*');
         $this->db->from('tb_transaksi');
@@ -38,6 +40,8 @@ class M_pesananmasuk extends CI_Model {
         //$this->db->join('tb_rinci_transaksi', 'tb_rinci_transaksi.id_barang = tb_barang.id_barang', 'left');
         //$this->db->join('tb_barang', 'tb_barang.id_barang = tb_transaksi.id_barang', 'left');
         $this->db->join('tb_pelanggan', 'tb_pelanggan.id_pelanggan = tb_transaksi.id_pelanggan', 'left');
+        $this->db->where('tgl_order >=', $tgl_awal);
+        $this->db->where('tgl_order <=', $tgl_akhir);
         $this->db->where('status_order=3');
         $this->db->where('id_user', $idtoko); 
         $this->db->order_by('id_transaksi', 'desc');

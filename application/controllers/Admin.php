@@ -226,8 +226,10 @@ class Admin extends CI_Controller {
     public function excel()
     {
         $idtoko = $this->session->userdata('id_user');
+        $tgl_awal = $this->input->post('tgl_awal');
+        $tgl_akhir = $this->input->post('tgl_akhir');
         
-        $data['pesananmasuk'] = $this->m_pesananmasuk->listexcel($idtoko)->result();
+        $data['pesananmasuk'] = $this->m_pesananmasuk->listexcel($idtoko,$tgl_awal,$tgl_akhir)->result();
 
         //print_r($data);
         //die();
@@ -314,9 +316,11 @@ class Admin extends CI_Controller {
     public function pdf()
 	{
         $idtoko = $this->session->userdata('id_user');
+        $tgl_awal = $this->input->post('tgl_awal');
+        $tgl_akhir = $this->input->post('tgl_akhir');
 
         $this->load->library('pdf');
-        $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko)->result();
+        $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko,$tgl_awal,$tgl_akhir)->result();
 
         $this->load->view('v_pdfpenjualan', $data);
 
