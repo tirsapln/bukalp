@@ -23,7 +23,7 @@ class M_pesananmasuk extends CI_Model {
         //$this->db->join('tb_rinci_transaksi', 'tb_rinci_transaksi.no_order = tb_transaksi.no_order', 'left');
         //$this->db->join('tb_rinci_transaksi', 'tb_rinci_transaksi.id_barang = tb_barang.id_barang', 'left');
         //$this->db->join('tb_barang', 'tb_barang.id_barang = tb_transaksi.id_barang', 'left');
-        $this->db->join('tb_pelanggan', 'tb_pelanggan.id_pelanggan = tb_transaksi.id_pelanggan', 'left');
+        //$this->db->join('tb_pelanggan', 'tb_pelanggan.id_pelanggan = tb_transaksi.id_pelanggan', 'left');
         $this->db->where('tgl_order >=', $tgl_awal);
         $this->db->where('tgl_order <=', $tgl_akhir);
         $this->db->where('status_order=3');
@@ -39,7 +39,7 @@ class M_pesananmasuk extends CI_Model {
         //$this->db->join('tb_rinci_transaksi', 'tb_rinci_transaksi.no_order = tb_transaksi.no_order', 'left');
         //$this->db->join('tb_rinci_transaksi', 'tb_rinci_transaksi.id_barang = tb_barang.id_barang', 'left');
         //$this->db->join('tb_barang', 'tb_barang.id_barang = tb_transaksi.id_barang', 'left');
-        $this->db->join('tb_pelanggan', 'tb_pelanggan.id_pelanggan = tb_transaksi.id_pelanggan', 'left');
+        //$this->db->join('tb_pelanggan', 'tb_pelanggan.id_pelanggan = tb_transaksi.id_pelanggan', 'left');
         $this->db->where('tgl_order >=', $tgl_awal);
         $this->db->where('tgl_order <=', $tgl_akhir);
         $this->db->where('status_order=3');
