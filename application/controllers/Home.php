@@ -102,7 +102,7 @@ class Home extends CI_Controller {
                     'isi' => 'v_bantuan'    
                     
              );
-             $this->load->view('layout/v_wrapper_backend', $data, FALSE);
+             $this->load->view('layout/v_wrapper_frontend', $data, FALSE);
             }
             else
             {

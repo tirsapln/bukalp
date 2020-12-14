@@ -304,6 +304,7 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+<?php } ?>
 
 <!-- MODAL EXCEL -->  
 
@@ -319,7 +320,7 @@
       </div>
       <div class="modal-body">
 
-        <?php echo form_open('admin/excel/')?>
+        <?php echo form_open('admin/excel')?>
         <table class="table">
             
             <tr>
@@ -361,7 +362,7 @@
       </div>
       <div class="modal-body">
 
-        <?php echo form_open('admin/pdf/')?>
+        <?php echo form_open('admin/pdf')?>
         <table class="table">
             
             <tr>
@@ -388,4 +389,3 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-<?php } ?>
