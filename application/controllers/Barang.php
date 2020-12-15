@@ -2,7 +2,9 @@
 
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+require('./application/third_party/phpoffice/vendor/autoload.php');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Barang extends CI_Controller {
 
     public function __construct()
@@ -197,8 +199,47 @@ class Barang extends CI_Controller {
     }
 
 
-
     public function excel()
+    {
+        $idtoko = $this->session->userdata('id_user');
+
+        $data_barang = $this->m_barang->listexcel($idtoko)->result();
+        $spreadsheet = new Spreadsheet;
+
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A1', 'N0')
+        ->setCellValue('B1', 'NAMA BARANG')
+        ->setCellValue('C1', 'KATEGORI')
+        ->setCellValue('D1', 'HARGA')
+        ->setCellValue('E1', 'DESKRIPSI')
+        ->setCellValue('F1', 'GAMBAR')
+        ->setCellValue('G1', 'BERAT')
+        ->setCellValue('H1', 'STOK');
+
+        $baris=2;
+        $no=1;
+
+        foreach ($data_barang as $brg) {
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$baris, $no++)
+                        ->setCellValue('B'.$baris, $brg->nama_barang)
+                        ->setCellValue('C'.$baris, $brg->nama_kategori)
+                        ->setCellValue('D'.$baris, $brg->harga)
+                        ->setCellValue('E'.$baris, $brg->deskripsi)
+                        ->setCellValue('F'.$baris, $brg->gambar)
+                        ->setCellValue('G'.$baris, $brg->berat)
+                        ->setCellValue('H'.$baris, $brg->stok);
+
+            $baris++;
+        }
+        $writer= new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Data Barang.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+
+
+    }
+    public function excelbukang()
     {
         $idtoko = $this->session->userdata('id_user');
         
