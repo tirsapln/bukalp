@@ -1,6 +1,9 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+require('./application/third_party/phpoffice/vendor/autoload.php');
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Admin extends CI_Controller {
 
@@ -13,11 +16,9 @@ class Admin extends CI_Controller {
         
     }
     
-
     public function index()
     {
-        //print_r($this->m_admin->totalpm());
-        //die();
+        
         $data = array(
             'title' => 'Dashboard',
             'totalbarang' => $this->m_admin->totalbarang(),
@@ -38,7 +39,6 @@ class Admin extends CI_Controller {
         $id_user = $this->session->userdata('id_user');
         $this->form_validation->set_rules('nama_user', 'Nama Toko', 'required', array('required' =>'%s Harus Diisi!!!'));
         
-        
         if ($this->form_validation->run() == FALSE) {
             $data = array(
                 'title' => 'Setting',
@@ -46,7 +46,6 @@ class Admin extends CI_Controller {
                 'isi' => 'v_setting'
          );
          $this->load->view('layout/v_wrapper_backend', $data, FALSE);
-
         } else { 
             $data = array(
                 'id_user' => $id_user,
@@ -59,16 +58,11 @@ class Admin extends CI_Controller {
                 'no_rek' => $this->input->post('no_rek'),
                 'username' => $this->input->post('username'),
                 'password' => $this->input->post('password'),
-                
-
             );
-    
             $this->m_admin->update($data);
             $this->session->set_flashdata('pesan', 'Berhasil Diubah');
             redirect('admin/setting');
         }
-        
-     
     }
 
     public function pesanan_masuk()
@@ -120,8 +114,6 @@ class Admin extends CI_Controller {
 
     public function print($id_transaksi)
     {
-        
-        
         $id = $this->m_pesananmasuk->rincipesanan($id_transaksi)->id_user;
         $order = $this->m_pesananmasuk->rincipesanan($id_transaksi)->no_order;
         $no_order = array('no_order' =>$order);
@@ -191,8 +183,6 @@ class Admin extends CI_Controller {
         $this->m_admin->editqna($data);
         $this->session->set_flashdata('pesan', 'Berhasil Diubah');
         redirect('admin/qna');
-
-
     }
 
     public function hapusqna($id_qna)
@@ -228,6 +218,71 @@ class Admin extends CI_Controller {
         $idtoko = $this->session->userdata('id_user');
         $tgl_awal = $this->input->post('tgl_awal');
         $tgl_akhir = $this->input->post('tgl_akhir');
+
+        $data_transaksi = $this->m_pesananmasuk->listexcel($idtoko,$tgl_awal,$tgl_akhir)->result();
+        $spreadsheet = new Spreadsheet;
+
+        $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A1', 'N0')
+        ->setCellValue('B1', 'NO. ORDER')
+        ->setCellValue('C1', 'TANGGAL ORDER')
+        ->setCellValue('D1', 'NAMA PENERIMA')
+        ->setCellValue('E1', 'NOMOR HP')
+        ->setCellValue('F1', 'PROVINSI PENERIMA')
+        ->setCellValue('G1', 'KOTA PENERIMA')
+        ->setCellValue('H1', 'ALAMAT PENERIMA')
+        ->setCellValue('I1', 'KODE POS')
+        ->setCellValue('J1', 'EKSPEDISI')
+        ->setCellValue('K1', 'PAKET')
+        ->setCellValue('L1', 'ESTIMASI')
+        ->setCellValue('M1', 'ONGKIR')
+        ->setCellValue('N1', 'BERAT')
+        ->setCellValue('O1', 'GRAND TOTAL')
+        ->setCellValue('P1', 'TOTAL BAYAR')
+        ->setCellValue('Q1', 'TRANSAKSI ATAS NAMA')
+        ->setCellValue('R1', 'NAMA BANK')
+        ->setCellValue('S1', 'NO. REKENING')
+        ->setCellValue('T1', 'NOMOR RESI');
+
+        $baris = 2;
+        $no = 1;
+        foreach($data_transaksi as $pm) 
+        {
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$baris, $no++)
+                                        ->setCellValue('B'.$baris, $pm->no_order)
+                                        ->setCellValue('C'.$baris, $pm->tgl_order)
+                                        ->setCellValue('D'.$baris, $pm->nama_penerima)
+                                        ->setCellValue('E'.$baris, $pm->hp_penerima)
+                                        ->setCellValue('F'.$baris, $pm->provinsi)
+                                        ->setCellValue('G'.$baris, $pm->kota)
+                                        ->setCellValue('H'.$baris, $pm->alamat)
+                                        ->setCellValue('I'.$baris, $pm->kode_pos)
+                                        ->setCellValue('J'.$baris, $pm->ekspedisi)
+                                        ->setCellValue('K'.$baris, $pm->paket)
+                                        ->setCellValue('L'.$baris, $pm->estimasi)
+                                        ->setCellValue('M'.$baris, $pm->ongkir)
+                                        ->setCellValue('N'.$baris, $pm->berat)
+                                        ->setCellValue('O'.$baris, $pm->grand_total)
+                                        ->setCellValue('P'.$baris, $pm->total_bayar)
+                                        ->setCellValue('Q'.$baris, $pm->atas_nama_pengguna)
+                                        ->setCellValue('R'.$baris, $pm->nama_bank_pengguna)
+                                        ->setCellValue('S'.$baris, $pm->no_rek_pengguna)
+                                        ->setCellValue('T'.$baris, $pm->no_resi);
+            $baris++;
+        }
+        $writer= new Xlsx($spreadsheet);
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Laporan Penjualan BukaLapas.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+
+    }
+
+    public function excelbukang()
+    {
+        $idtoko = $this->session->userdata('id_user');
+        $tgl_awal = $this->input->post('tgl_awal');
+        $tgl_akhir = $this->input->post('tgl_akhir');
         
         $data['pesananmasuk'] = $this->m_pesananmasuk->listexcel($idtoko,$tgl_awal,$tgl_akhir)->result();
 
@@ -245,8 +300,6 @@ class Admin extends CI_Controller {
 
         $object->setActiveSheetIndex(0);
         $object->getActiveSheet()->setCellValue('A1', 'N0');
-        //$object->getActiveSheet()->setCellValue('B1', 'NAMA BARANG');
-        //$object->getActiveSheet()->setCellValue('C1', 'QTY');
         $object->getActiveSheet()->setCellValue('B1', 'NO. ORDER');
         $object->getActiveSheet()->setCellValue('C1', 'TANGGAL ORDER');
         $object->getActiveSheet()->setCellValue('D1', 'NAMA PENERIMA');
@@ -276,8 +329,6 @@ class Admin extends CI_Controller {
 
         foreach ($data['pesananmasuk'] as $pm) {
             $object->getActiveSheet()->setCellValue('A'.$baris, $no++);
-            //$object->getActiveSheet()->setCellValue('B'.$baris, $pm->nama_barang);
-            //$object->getActiveSheet()->setCellValue('C'.$baris, $pm->qty);
             $object->getActiveSheet()->setCellValue('B'.$baris, $pm->no_order);
             $object->getActiveSheet()->setCellValue('C'.$baris, $pm->tgl_order);
             $object->getActiveSheet()->setCellValue('D'.$baris, $pm->nama_penerima);
