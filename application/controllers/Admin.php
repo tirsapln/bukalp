@@ -368,7 +368,7 @@ class Admin extends CI_Controller {
 
     }
 
-    public function pdf()
+    public function mpdf()
     {
         
         $idtoko = $this->session->userdata('id_user');
@@ -376,14 +376,14 @@ class Admin extends CI_Controller {
         $tgl_akhir = $this->input->post('tgl_akhir');
         $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko,$tgl_awal,$tgl_akhir)->result();
         
-        require('./vendor/autoload.php');
+        require_once('./vendor/autoload.php');
         $mpdf = new \Mpdf\Mpdf(['orientation'=> 'L']);
         $laporan = $this->load->view('v_pdfpenjualan', $data, true);
         $mpdf->WriteHTML($laporan);
         $mpdf->Output();
     }
 
-    public function pdfdom()
+    public function pdf()
 	{
         $idtoko = $this->session->userdata('id_user');
         $tgl_awal = $this->input->post('tgl_awal');
@@ -395,6 +395,7 @@ class Admin extends CI_Controller {
         //$this->load->view('v_pdfpenjualan', $data);
 
         $this->load->library('pdf');
+        $this->pdf->set_option('isRemoteEnabled', true);
         $this->pdf->setPaper('A4', 'landscape');
         $this->pdf->filename= "Laporan Penjualan BukaLapas.pdf";
         $this->pdf->load_view('v_pdfpenjualan', $data);

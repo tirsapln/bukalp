@@ -296,31 +296,33 @@ class Barang extends CI_Controller {
 
     }
 
-    public function pdf()
+    public function mpdf()
     {
         $idtoko = $this->session->userdata('id_user');
         $data['barang'] = $this->m_barang->listpdf($idtoko)->result();
 
-        require('./vendor/autoload.php');
+        require_once('./vendor/autoload.php');
         $mpdf = new \Mpdf\Mpdf(['orientation'=> 'P']);
         $laporan = $this->load->view('v_pdfbarang', $data, true);
         $mpdf->WriteHTML($laporan);
         $mpdf->Output();
     }
 
-    public function pdfdom()
+    public function pdf()
 	{
         $idtoko = $this->session->userdata('id_user');
 
-        $this->load->library('pdf');
+        //$this->load->library('pdf');
         $data['barang'] = $this->m_barang->listpdf($idtoko)->result();
 
         //$this->load->view('v_pdfbarang', $data);
 
         $this->load->library('pdf');
+        $this->pdf->set_option('isRemoteEnabled', true);
         $this->pdf->setPaper('A4', 'landscape');
         $this->pdf->filename= "Data Barang BukaLapas.pdf";
         $this->pdf->load_view('v_pdfbarang', $data);
+        
     }
 
 
