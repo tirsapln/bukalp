@@ -315,17 +315,12 @@ class Barang extends CI_Controller {
         $this->load->library('pdf');
         $data['barang'] = $this->m_barang->listpdf($idtoko)->result();
 
-        $this->load->view('v_pdfbarang', $data);
+        //$this->load->view('v_pdfbarang', $data);
 
-        $paper_size = 'A4';
-        $orientation = 'landscape';
-        $html = $this->output->get_output();
-        $this->pdf->set_paper($paper_size, $orientation);
-        
-        $this->pdf->set_option('isRemoteEnabled', TRUE);
-        $this->pdf->load_html($html);
-        $this->pdf->render();
-        $this->pdf->stream("data_barang.pdf", array('Attachment' =>0));
+        $this->load->library('pdf');
+        $this->pdf->setPaper('A4', 'landscape');
+        $this->pdf->filename= "Data Barang BukaLapas.pdf";
+        $this->pdf->load_view('v_pdfbarang', $data);
     }
 
 
