@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 require('./application/third_party/phpoffice/vendor/autoload.php');
+require('./vendor/autoload.php');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -375,7 +376,6 @@ class Admin extends CI_Controller {
         $tgl_akhir = $this->input->post('tgl_akhir');
         $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko,$tgl_awal,$tgl_akhir)->result();
         
-        require_once APPPATH .'vendor/autoload.php';
         $mpdf = new \Mpdf\Mpdf(['orientation'=> 'L']);
         $laporan = $this->load->view('v_pdfpenjualan', $data, true);
         $mpdf->WriteHTML($laporan);

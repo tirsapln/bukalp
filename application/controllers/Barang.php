@@ -3,6 +3,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 require('./application/third_party/phpoffice/vendor/autoload.php');
+require('./vendor/autoload.php');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Barang extends CI_Controller {
@@ -300,14 +301,14 @@ class Barang extends CI_Controller {
         $idtoko = $this->session->userdata('id_user');
         $data['barang'] = $this->m_barang->listpdf($idtoko)->result();
 
-        require_once APPPATH .'vendor/autoload.php';
+        
         $mpdf = new \Mpdf\Mpdf(['orientation'=> 'P']);
         $laporan = $this->load->view('v_pdfbarang', $data, true);
         $mpdf->WriteHTML($laporan);
         $mpdf->Output();
     }
 
-    public function pdfbukang()
+    public function pdfdom()
 	{
         $idtoko = $this->session->userdata('id_user');
 
