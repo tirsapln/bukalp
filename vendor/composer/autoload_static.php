@@ -12,6 +12,10 @@ class ComposerStaticInit4cfea0cca6f4be4f35534d08f11695a0
     );
 
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'setasign\\Fpdi\\' => 14,
+        ),
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
@@ -28,7 +32,12 @@ class ComposerStaticInit4cfea0cca6f4be4f35534d08f11695a0
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'Prophecy\\' => 9,
+        ),
+        'M' => 
+        array (
+            'Mpdf\\' => 5,
         ),
         'F' => 
         array (
@@ -43,6 +52,10 @@ class ComposerStaticInit4cfea0cca6f4be4f35534d08f11695a0
     );
 
     public static $prefixDirsPsr4 = array (
+        'setasign\\Fpdi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
+        ),
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
@@ -65,9 +78,17 @@ class ComposerStaticInit4cfea0cca6f4be4f35534d08f11695a0
         array (
             0 => __DIR__ . '/..' . '/phenx/php-svg-lib/src/Svg',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'Mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
         ),
         'FontLib\\' => 
         array (

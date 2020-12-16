@@ -2,8 +2,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 require('./application/third_party/phpoffice/vendor/autoload.php');
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf;
+
 
 class Admin extends CI_Controller {
 
@@ -365,25 +368,53 @@ class Admin extends CI_Controller {
     }
 
     public function pdf()
+    {
+        $idtoko = $this->session->userdata('id_user');
+        $tgl_awal = $this->input->post('tgl_awal');
+        $tgl_akhir = $this->input->post('tgl_akhir');
+        $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko,$tgl_awal,$tgl_akhir)->result();
+        $mpdf = new \Mpdf\Mpdf(['orientation'=> 'L']);
+        $laporan = $this->load->view('v_pdfpenjualan', $data, true);
+        $mpdf->WriteHTML($laporan);
+        $mpdf->Output();
+    }
+
+    public function pdfdom()
 	{
         $idtoko = $this->session->userdata('id_user');
         $tgl_awal = $this->input->post('tgl_awal');
         $tgl_akhir = $this->input->post('tgl_akhir');
 
-        $this->load->library('pdf');
+        
         $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko,$tgl_awal,$tgl_akhir)->result();
 
-        $this->load->view('v_pdfpenjualan', $data);
+        //$this->load->view('v_pdfpenjualan', $data);
 
-        $paper_size = 'A4';
-        $orientation = 'landscape';
-        $html = $this->output->get_output();
-        $this->pdf->set_paper($paper_size, $orientation);
+        $this->load->library('pdf');
+        $this->pdf->setPaper('A4', 'landscape');
+        $this->pdf->filename= "Laporan Penjualan BukaLapas.pdf";
+        $this->pdf->load_view('v_pdfpenjualan', $data);
         
-        $this->pdf->set_option('isRemoteEnabled', TRUE);
-        $this->pdf->load_html($html);
-        $this->pdf->render();
-        $this->pdf->stream("data_penjualan.pdf", array('Attachment' =>0));
+    }
+
+    public function pdfphp()
+    {
+        $idtoko = $this->session->userdata('id_user');
+        $tgl_awal = $this->input->post('tgl_awal');
+        $tgl_akhir = $this->input->post('tgl_akhir');
+
+        //$spreadsheet= new Spreadsheet();
+        $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko,$tgl_awal,$tgl_akhir)->result();
+
+        $spreadsheet= new Spreadsheet();
+        $spreadsheet= $this->load->view('v_pdfpenjualan', $data);
+        
+
+        $writer = new Mpdf($spreadsheet);
+        $writer->save("Laporan Penjualan BukaLapas.pdf");
+
+
+
     }
 
 }

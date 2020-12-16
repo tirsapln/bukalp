@@ -296,6 +296,17 @@ class Barang extends CI_Controller {
     }
 
     public function pdf()
+    {
+        $idtoko = $this->session->userdata('id_user');
+        $data['barang'] = $this->m_barang->listpdf($idtoko)->result();
+
+        $mpdf = new \Mpdf\Mpdf(['orientation'=> 'P']);
+        $laporan = $this->load->view('v_pdfbarang', $data, true);
+        $mpdf->WriteHTML($laporan);
+        $mpdf->Output();
+    }
+
+    public function pdfbukang()
 	{
         $idtoko = $this->session->userdata('id_user');
 
