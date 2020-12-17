@@ -396,6 +396,8 @@ class Admin extends CI_Controller {
 
         $this->load->library('pdf');
         $this->pdf->set_option('isRemoteEnabled', true);
+        $this->pdf->set_option('tempDir','/home/project/web/bukalapastirsa.ref.si/public_html/aplication/tmp');
+        
         $this->pdf->setPaper('A4', 'landscape');
         $this->pdf->filename= "Laporan Penjualan BukaLapas.pdf";
         $this->pdf->load_view('v_pdfpenjualan', $data);
