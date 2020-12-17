@@ -301,7 +301,7 @@ class Barang extends CI_Controller {
         $idtoko = $this->session->userdata('id_user');
         $data['barang'] = $this->m_barang->listpdf($idtoko)->result();
 
-        require_once('./vendor/autoload.php');
+        require_once __DIR__.'/vendor/autoload.php';
         $mpdf = new \Mpdf\Mpdf(['orientation'=> 'P']);
         $laporan = $this->load->view('v_pdfbarang', $data, true);
         $mpdf->WriteHTML($laporan);

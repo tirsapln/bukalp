@@ -376,7 +376,7 @@ class Admin extends CI_Controller {
         $tgl_akhir = $this->input->post('tgl_akhir');
         $data['transaksi'] = $this->m_pesananmasuk->listpdf($idtoko,$tgl_awal,$tgl_akhir)->result();
         
-        require_once('./vendor/autoload.php');
+        require_once __DIR__.'/vendor/autoload.php';
         $mpdf = new \Mpdf\Mpdf(['orientation'=> 'L']);
         $laporan = $this->load->view('v_pdfpenjualan', $data, true);
         $mpdf->WriteHTML($laporan);
